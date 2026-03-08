@@ -1,0 +1,67 @@
+This application is a Web Application, specifically built as a React/TypeScript single-page application (SPA) using Vite for bundling, Tailwind CSS/shadcn-ui for styling, and Supabase for backend database/authentication.
+
+Here is an explanation of what the app does:
+
+1. App Purpose: Housekeeping Service Platform (Faireez)
+The primary function of this application is to serve as a marketing and customer acquisition platform for a multi-tenant housekeeping service company called "Faireez."
+
+The app has two main modules:
+
+Marketing/Acquisition Frontend: A polished landing page to inform potential customers about the service ("Faireez - Premium Housekeeping for Your Building") and guide them to register.
+
+Customer Booking Flow: A multi-step flow that allows customers from specific residential buildings to select and book cleaning services.
+
+Event RSVP Forms: Several specialized pages designed to capture contact information for local, building-specific promotional events (e.g., "Free Coffee" or "Wine & Pizza Night").
+
+2. Key Functionalities and User Flow
+The application routes handle several distinct user journeys:
+
+A. Marketing & Registration (/, /findmybuilding)
+Home Page (/): This is a generic marketing landing page that highlights the benefits and unique selling points (USPs) of the housekeeping service. However, based on the code, the primary intention seems to be redirecting users to a discovery page.
+
+Building Finder (/findmybuilding): This page focuses on guiding the user to locate their residential building.
+
+It uses an embedded SearchBar component and Fuse.js (a fuzzy-search library) to match the user's input against a list of pre-defined buildings and their addresses (from src/data/buildings.ts).
+
+If a building is found (e.g., "The Buchanan," "Alta+"), the user is prompted to click a button to proceed. This action typically redirects them to an external registration/booking page via deep links or specific URLs defined in the buildings data.
+
+B. Booking Flow (/booking)
+This is a multi-step booking wizard, designed to be used when the app is launched with a specific company ID (suggesting a multi-tenant SaaS application where the front-end dynamically adapts to different cleaning agencies).
+
+Load Data (Step 0): When the page loads, it fetches company-specific branding (logo, colors, name) and a list of available services from the Supabase database.
+
+Service Selection (Step 1): The user selects a required cleaning service from the fetched list.
+
+Date & Time Selection (Step 2): The user chooses a preferred date, a specific time slot (e.g., 08:00, 09:00), and a recurrence frequency (one-time, weekly, etc.).
+
+Customer Info Form (Step 3): The user inputs their personal details (name, email, phone, and full service address).
+
+Booking Summary & Confirmation (Step 4): The user reviews all details and confirms the booking. Upon confirmation, the data is saved to the Supabase database (into the customers and bookings tables), and a success toast notification is shown.
+
+C. Promotional Event RSVP Forms
+The app contains several pages (/unionchannel-coffee-rsvp, /alta-coffee-rsvp, /hahehad-rsvp, etc.) that act as simple lead capture forms for promotional events at specific buildings.
+
+Users submit their name and email to RSVP for an event (e.g., free coffee).
+
+The data is submitted to external webhooks (Make.com URLs are used in the code) for processing, customer list updates (like Mailchimp integration), and sending confirmation emails.
+
+After submission, the user is presented with a Success State where they are often encouraged to provide their phone number in exchange for a promo code (e.g., "$75 OFF"). This is a secondary conversion goal.
+
+3. Technology and Architecture
+This is a Web App with a modern stack:
+
+Frontend: Built with React and TypeScript. It uses Vite as the build tool.
+
+Styling: Utilizes Tailwind CSS for utility-first styling and shadcn/ui for pre-built, accessible components (like cards, buttons, dialogs).
+
+Routing: Uses react-router-dom to manage different pages/views (Home, Booking, RSVP forms).
+
+State Management: Uses React hooks (useState, useRef) for local state and @tanstack/react-query for server state/data fetching.
+
+Backend & Database: It uses Supabase for its persistent database (Postgres) and authentication features.
+
+Tables include companies, services, customers, and bookings (defining a clear multi-tenant architecture ).
+
+Database connection details are stored in the .env file.
+
+Integrations: Uses external webhooks (Make.com) to handle marketing automation tasks like submitting RSVP data and sending personalized email confirmations.
